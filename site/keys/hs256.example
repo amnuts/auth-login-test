@@ -1,0 +1,5 @@
+put your super secret key here and remove '.example' from the filename.
+
+You could generate it with:
+
+echo -n 'value' | openssl dgst -sha256 -hmac 'this is my super secret ket here' > hs256

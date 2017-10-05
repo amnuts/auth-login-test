@@ -17,11 +17,14 @@ namespace Slim\Middleware;
 
 use Slim\Middleware\JwtAuthentication\RequestMethodRule;
 use Slim\Middleware\JwtAuthentication\RequestPathRule;
+
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Firebase\JWT\JWT;
+
+use Lcobucci\JWT\Parser;
+use Lcobucci\JWT\Signer\Key;
 
 class JwtAuthentication
 {
@@ -51,6 +54,18 @@ class JwtAuthentication
         "passthrough" => null,
         "callback" => null,
         "error" => null
+    ];
+
+    private $algorithms = [
+        'HS256' => 'Hmac\\Sha256',
+        'HS384' => 'Hmac\\Sha384',
+        'HS512' => 'Hmac\\Sha512',
+        'RS256' => 'Rsa\\Sha256',
+        'RS384' => 'Rsa\\Sha384',
+        'RS512' => 'Rsa\\Sha512',
+        'ES256' => 'Ecdsa\\Sha256',
+        'ES384' => 'Ecdsa\\Sha384',
+        'ES512' => 'Ecdsa\\Sha512'
     ];
 
     /**
@@ -118,7 +133,7 @@ class JwtAuthentication
             ])->withStatus(401);
         }
 
-        /* If token cannot be decoded return with 401 Unauthorized. */
+        /* If token cannot be decoded and verified return with 401 Unauthorized. */
         if (false === $decoded = $this->decodeToken($token)) {
             return $this->error($request, $response, [
                 "message" => $this->message,
@@ -246,11 +261,16 @@ class JwtAuthentication
     public function decodeToken($token)
     {
         try {
-            return JWT::decode(
-                $token,
-                $this->options["secret"],
-                (array) $this->options["algorithm"]
-            );
+            $alg = strtoupper((string)$this->options['algorithm']);
+            if (empty($alg) || !in_array($alg, $this->algorithms)) {
+                $alg = 'HS512';
+            }
+            $signer = new ${"Lcobucci\\JWT\\Signer\\{$this->algorithms[$alg]}"};
+            $decoded = (new Parser())->parse($token);
+            if (empty($decoded) || !$decoded->verify($signer, new Key($this->options['secret']))) {
+                return false;
+            }
+            return $decoded;
         } catch (\Exception $exception) {
             $this->message = $exception->getMessage();
             $this->log(LogLevel::WARNING, $exception->getMessage(), [$token]);
