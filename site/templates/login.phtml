@@ -11,12 +11,58 @@
 
 <h1>Login page</h1>
 
-<form id="login" method="post">
+<form id="login" method="post" action="/login">
     <h4>Sign in <i>Old Skool</i> with your email and password</h4>
     <div><label>email address<br/><input type="text" name="username" /></label></div>
     <div><label>password<br/><input type="password" name="password" /></label></div>
     <div><input type="submit" /></div>
+    <?php if (!empty($message)): ?>
+    <div id="feedback"><?php echo $message; ?></div>
+    <?php endif; ?>
 </form>
+
+<?php
+/*
+<script>
+$('#login').submit(function(e){
+    e.preventDefault();
+    var $form = $(this);
+    $.ajax({
+        url: 'http://localhost:8020/authenticate',
+        type: 'get',
+        dataType: 'json',
+        data: $form.serialize(),
+        success: function(d) {
+            //
+            if (d.hasOwnProperty('token') && d.token !== '') {
+                //
+                $.ajax({
+                    url: '/login/' + d.token,
+                    type: 'PUT',
+                    success: function(result) {
+                        location.href = '/projects';
+                    },
+                    error: function(result) {
+                        $('#feedback').html('<p>Token could not be set at this time</p>');
+                    }
+                });
+                //
+                console.log('/login/' + d.token);
+            } else {
+                $('#feedback').html('<p>No token was provided by the authentication service</p>');
+            }
+            //
+        },
+        error: function(d) {
+            $('#feedback').html('<p>' + d.error + '</p>');
+        }
+        crossDomain: true
+    });
+    return false;
+});
+</script>
+*/
+?>
 
 </body>
 </html>

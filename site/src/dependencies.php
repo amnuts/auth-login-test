@@ -17,3 +17,8 @@ $container['logger'] = function ($c) {
     $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
     return $logger;
 };
+
+// Flash messenger
+$container['flash'] = function ($c) {
+    return new Slim\Flash\Messages();
+};

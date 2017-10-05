@@ -13,12 +13,16 @@ $app->post('/authenticate', function (Request $request, Response $response, arra
     $username = $request->getParam('username');
     $password = $request->getParam('password');
     if (empty($username) || empty($password)) {
-        return $response->withJson(['error' => 'Username or password not supplied']);
+        return $response
+            ->withStatus(401)
+            ->withJson(['error' => 'Username or password not supplied']);
     }
 
-    $user = $this->db->querySingle("select * from users where username = '" . $this->db->escapeString($username) . "'", true);
+    $user = $this->db->querySingle("select * from users where email = '" . $this->db->escapeString($username) . "'", true);
     if (empty($user) || $user['password'] != password_hash($password, PASSWORD_DEFAULT)) {
-        return $response->withJson(['error' => 'Username or password is incorrect']);
+        return $response
+            ->withStatus(401)
+            ->withJson(['error' => 'Email or password is incorrect']);
     }
 
     $token = (new Builder())
