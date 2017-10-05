@@ -3,7 +3,7 @@
 $app->add(new \Slim\Middleware\JwtAuthentication([
     'path'        => '/',
     'passthrough' => ['/login'],
-    'secret'      => file_get_contents(__DIR__.'/../keys/hs512'),
+    'secret'      => file_get_contents(__DIR__.'/../../keys/hs512'),
     'algorithm'   => 'HS512',
     'relaxed'     => ['localhost'],
     'callback'    => function($request, $response, $arguments) use ($container) {
