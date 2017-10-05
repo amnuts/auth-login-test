@@ -1,0 +1,18 @@
+{
+  "require": {
+    "php": ">=5.5.0",
+    "slim/slim": "^3.1",
+    "slim/php-view": "^2.0",
+    "monolog/monolog": "^1.17",
+    "lcobucci/jwt": "^3.2"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "AuthTest\\": "../src",
+      "Slim\\Middleware\\": "src/Components/Middleware"
+    }
+  },
+  "scripts": {
+    "start": "php -S localhost:8010 -t public public/index.php"
+  }
+}

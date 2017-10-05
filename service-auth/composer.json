@@ -1,0 +1,12 @@
+{
+  "require": {
+    "onelogin/php-saml": "^2.11",
+    "hybridauth/hybridauth": "v2.9.6",
+    "lcobucci/jwt": "^3.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "AuthTest\\": "../src/"
+    }
+  }
+}
