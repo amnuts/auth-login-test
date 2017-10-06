@@ -5,6 +5,8 @@ use Slim\Http\Response;
 
 // Routes
 
+// Obviously having all of this split into controllers would be far better!
+
 $app->get('/projects', function (Request $request, Response $response, array $args) {
     $this->logger->info("'/projects' route");
     return $this->renderer->render($response, 'projects.phtml', $args);
@@ -31,7 +33,7 @@ $app->get('/logout', function (Request $request, Response $response, array $args
 });
 
 $app->post('/login', function (Request $request, Response $response, array $args) {
-    $curl = curl_init('http://localhost:8020/authenticate');
+    $curl = curl_init('http://localhost:8020/epl');
     curl_setopt($curl, CURLOPT_POST, true);
     curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query([
         'email' => $request->getParam('email'),
@@ -48,7 +50,18 @@ $app->post('/login', function (Request $request, Response $response, array $args
             return $response->withRedirect('/login');
         }
     }
-    setcookie('token', $result->token, 0, '', 'localhost');
+    setcookie('token', $result->token, 0, '/', 'localhost');
+    return $response->withRedirect('/projects');
+});
+
+$app->get('/sso/login/{jwt}', function (Request $request, Response $response, array $args) {
+    $jwt = base64_decode($args['jwt']);
+    $token = $this->get('token')($jwt, 'HS512');
+    if (!$token->validate()) {
+        return $response->withRedirect('/login');
+    }
+    echo 'setting cookie';
+    setcookie('token', $jwt, 0, '/', 'localhost');
     return $response->withRedirect('/projects');
 });
 

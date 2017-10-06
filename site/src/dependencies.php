@@ -22,3 +22,11 @@ $container['logger'] = function ($c) {
 $container['flash'] = function ($c) {
     return new Slim\Flash\Messages();
 };
+
+// Token validation
+$container['token'] = function($c) {
+    return function ($token) use ($c) {
+        return new \Components\Token($c, $token, $alg = null);
+    };
+};
+

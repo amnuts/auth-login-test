@@ -19,6 +19,22 @@ return [
         // database
         'database' => [
             'path' => __DIR__.'/../users.sqlite'
+        ],
+
+        // SSO logins
+        'sso' => [
+            'sp' => [
+                'entityId' => 'http://localhost:8020/sso/%s/metadata',
+                'assertionConsumerService' => ['url' => 'http://localhost:8020/sso/%s/acs',],
+                'singleLogoutService' => ['url' => 'http://localhost:8020/sso/%s/slo',],
+                'NameIDFormat' => 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
+            ],
+            'idp' => [
+                'entityId' => '',
+                'singleSignOnService' => ['url' => ''],
+                'singleLogoutService' => ['url' => ''],
+                'x509cert' => '',
+            ]
         ]
     ],
 ];

@@ -11,7 +11,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "AuthTest\\": "../src"
+            "AuthTest\\": "../src",
+            "Components\\": "src/Components"
         }
     },
     "scripts": {
@@ -19,6 +20,7 @@
         "initdb": "php bin/initdb.php"
     },
     "require-dev": {
-        "fzaninotto/Faker": "^1.7"
+        "fzaninotto/Faker": "^1.7",
+        "raveren/kint": "^1.1"
     }
 }

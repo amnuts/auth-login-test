@@ -10,7 +10,8 @@
   "autoload-dev": {
     "psr-4": {
       "AuthTest\\": "../src",
-      "Slim\\Middleware\\": "src/Components/Middleware"
+      "Slim\\Middleware\\": "src/Components/Middleware",
+      "Components\\": "src/Components"
     }
   },
   "scripts": {

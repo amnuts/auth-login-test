@@ -26,3 +26,17 @@ $container['db'] = function($c) {
     }
     return new \SQLite3($path);
 };
+
+// Token generation
+$container['token'] = function($c) {
+    return function ($user) use ($c) {
+        return new \Components\Token($c, $user);
+    };
+};
+
+// SSO settings generation
+$container['sso'] = function($c) {
+    return function ($idpCode) use ($c) {
+        return new \Components\SSO($c, $idpCode);
+    };
+};
