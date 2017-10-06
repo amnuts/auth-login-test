@@ -265,9 +265,9 @@ class JwtAuthentication
             if (empty($alg) || !in_array($alg, $this->algorithms)) {
                 $alg = 'HS512';
             }
-            $signer = new ${"Lcobucci\\JWT\\Signer\\{$this->algorithms[$alg]}"};
+            $signer = "Lcobucci\\JWT\\Signer\\{$this->algorithms[$alg]}";
             $decoded = (new Parser())->parse($token);
-            if (empty($decoded) || !$decoded->verify($signer, new Key($this->options['secret']))) {
+            if (empty($decoded) || !$decoded->verify(new $signer(), new Key($this->options['secret']))) {
                 return false;
             }
             return $decoded;

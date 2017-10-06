@@ -10,16 +10,17 @@ use Lcobucci\JWT\Builder;
 // Routes
 
 $app->post('/authenticate', function (Request $request, Response $response, array $args) {
-    $username = $request->getParam('username');
+    $email = $request->getParam('email');
     $password = $request->getParam('password');
-    if (empty($username) || empty($password)) {
+
+    if (empty($email) || empty($password)) {
         return $response
             ->withStatus(401)
-            ->withJson(['error' => 'Username or password not supplied']);
+            ->withJson(['error' => 'Email or password not supplied']);
     }
 
-    $user = $this->db->querySingle("select * from users where email = '" . $this->db->escapeString($username) . "'", true);
-    if (empty($user) || $user['password'] != password_hash($password, PASSWORD_DEFAULT)) {
+    $user = $this->db->querySingle("select * from users where email = '" . $this->db->escapeString($email) . "'", true);
+    if (empty($user) ||  !password_verify($password, $user['password'])) {
         return $response
             ->withStatus(401)
             ->withJson(['error' => 'Email or password is incorrect']);
@@ -37,7 +38,7 @@ $app->post('/authenticate', function (Request $request, Response $response, arra
             'firstname' => $user['firstname'],
             'surname' => $user['surname']
         ])
-        ->sign(new Sha512(), new Key(file_get_contents(__DIR__.'/../../hs512')))
+        ->sign(new Sha512(), new Key(file_get_contents(__DIR__.'/../../keys/hs512')))
         ->getToken();
 
     return $response->withJson(['token' => (string)$token]);

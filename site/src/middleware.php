@@ -2,7 +2,7 @@
 
 $app->add(new \Slim\Middleware\JwtAuthentication([
     'path'        => '/',
-    'passthrough' => ['/login'],
+    'passthrough' => ['/login', '/info'],
     'secret'      => file_get_contents(__DIR__.'/../../keys/hs512'),
     'algorithm'   => 'HS512',
     'relaxed'     => ['localhost'],

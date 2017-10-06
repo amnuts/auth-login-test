@@ -8,13 +8,11 @@
 </head>
 <body>
 
-    <h1>Index page</h1>
+<?php include __DIR__.'/_menu.php'; ?>
 
-    <?php if (isset($name)) : ?>
-        <h2>Hello <?= htmlspecialchars($name); ?>!</h2>
-    <?php else: ?>
-        <p>Try <a href="http://www.slimframework.com">SlimFramework</a></p>
-    <?php endif; ?>
+<h1>You're in!</h1>
+
+<p>Well done, you've managed to log in!</p>
 
 </body>
 </html>

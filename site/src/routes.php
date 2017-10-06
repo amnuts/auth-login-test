@@ -23,51 +23,41 @@ $app->get('/login', function (Request $request, Response $response, array $args)
     return $this->renderer->render($response, 'login.phtml', $data);
 });
 
+$app->get('/logout', function (Request $request, Response $response, array $args) {
+    unset($_COOKIE['token']);
+    setcookie('token', null, -1, '', 'localhost');
+    $this->flash->addMessage('info', 'You have been logged out');
+    return $response->withRedirect('/login');
+});
+
 $app->post('/login', function (Request $request, Response $response, array $args) {
     $curl = curl_init('http://localhost:8020/authenticate');
     curl_setopt($curl, CURLOPT_POST, true);
     curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query([
-        'username' => $request->getParam('username'),
+        'email' => $request->getParam('email'),
         'password' => $request->getParam('password')
     ]));
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     $result = curl_exec($curl);
     curl_close($curl);
 
-    if ($response) {
-        $result = json_decode($response);
-        if ($result->error) {
-            $this->flash->addMessage('Error', $result->error);
-            return $response->withRedirect('/login');
-        }
-    }
-
-    setcookie('token', $result->token, 0, '', 'localhost');
-    return $response->withRedirect('/projects');
-
-    /*
-    $context  = stream_context_create([
-        'http' => [
-            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-            'method'  => 'get',
-            'content' => http_build_query([
-                'username' => $request->getParam('username'),
-                'password' => $request->getParam('password')
-            ]),
-        ]
-    ]);
-    $result = file_get_contents('http://localhost:8020/authenticate', false, $context);
     if ($result) {
         $result = json_decode($result);
         if ($result->error) {
-            $this->flash->addMessage('Error', $result->error);
+            $this->flash->addMessage('error', $result->error);
             return $response->withRedirect('/login');
         }
     }
-    */
+    setcookie('token', $result->token, 0, '', 'localhost');
+    return $response->withRedirect('/projects');
 });
 
-$app->get('/[{name}]', function (Request $request, Response $response, array $args) {
+$app->get('/info', function (Request $request, Response $response, array $args) {
+    return phpinfo();
+});
+
+$app->get('/', function (Request $request, Response $response, array $args) {
     $this->logger->info("'/' route");
     return $this->renderer->render($response, 'index.phtml', $args);
 });
+

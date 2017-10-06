@@ -11,13 +11,17 @@
 
 <h1>Login page</h1>
 
+<?php if (!empty($messages['info'])): ?>
+    <div id="info"><?php echo join('<br/>', $messages['info']); ?></div>
+<?php endif; ?>
+
 <form id="login" method="post" action="/login">
     <h4>Sign in <i>Old Skool</i> with your email and password</h4>
-    <div><label>email address<br/><input type="text" name="username" /></label></div>
+    <div><label>email address<br/><input type="text" name="email" /></label></div>
     <div><label>password<br/><input type="password" name="password" /></label></div>
     <div><input type="submit" /></div>
-    <?php if (!empty($message)): ?>
-    <div id="feedback"><?php echo $message; ?></div>
+    <?php if (!empty($messages['error'])): ?>
+    <div id="error"><?php echo join('<br/>', $messages['error']); ?></div>
     <?php endif; ?>
 </form>
 
