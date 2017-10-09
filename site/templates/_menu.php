@@ -1,4 +1,4 @@
-<ul>
+<ul id="mainmenu">
     <li>You can go to:</li>
     <li><a href="/">Homepage</a></li>
     <li><a href="/projects">Projects</a></li>

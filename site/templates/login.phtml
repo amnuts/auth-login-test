@@ -1,28 +1,35 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login</title>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-</head>
-<body>
+<?php include __DIR__.'/_header.php'; ?>
 
 <h1>Login page</h1>
 
 <?php if (!empty($messages['info'])): ?>
-    <div id="info"><?php echo join('<br/>', $messages['info']); ?></div>
+    <div class="info"><?php echo join('<br/>', $messages['info']); ?></div>
 <?php endif; ?>
 
 <form id="login" method="post" action="/login">
     <h4>Sign in <i>Old Skool</i> with your email and password</h4>
-    <div><label>email address<br/><input type="text" name="email" /></label></div>
-    <div><label>password<br/><input type="password" name="password" /></label></div>
-    <div><input type="submit" /></div>
+
+    <div class="row">
+        <div class="five columns">
+            <label for="frmEmail">email address</label>
+            <input class="u-full-width" type="email" placeholder="test@example.com" id="frmEmail">
+        </div>
+        <div class="five columns">
+            <label for="frmPassword">email address</label>
+            <input class="u-full-width" type="password" id="frmPassword">
+        </div>
+        <div class="two columns">
+            <input class="button-primary" type="submit" value="login" />
+        </div>
+    </div>
     <?php if (!empty($messages['error'])): ?>
-    <div id="error"><?php echo join('<br/>', $messages['error']); ?></div>
+    <div class="error"><?php echo join('<br/>', $messages['error']); ?></div>
     <?php endif; ?>
+</form>
+
+<form id="login" method="post" action="http://localhost:8020/oauth/google">
+    <h4>Sign in <i>Hipster Kool</i> with your Google account</h4>
+    <button class="loginBtn loginBtn--google">Login with Google</button>
 </form>
 
 <?php
@@ -68,5 +75,4 @@ $('#login').submit(function(e){
 */
 ?>
 
-</body>
-</html>
+<?php include __DIR__.'/_footer.php'; ?>
