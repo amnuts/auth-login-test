@@ -98,3 +98,40 @@ $app->get('/sso/{idpCode:[0-9]+}/slo', function (Request $request, Response $res
 
     $auth->logout(null, [], $nameId, $sessionIndex, false, $nameIdFormat);
 });
+
+// google login
+$app->any('/oauth/google', function (Request $request, Response $response, array $args) {
+    try {
+
+        if (isset($_REQUEST['hauth_start']) || isset($_REQUEST['hauth_done'])) {
+            Hybrid_Endpoint::process();
+        } else {
+            $auth = new \Hybrid_Auth(array(
+                'base_url' => 'http://localhost:8020/oauth/google',
+                'providers' => array(
+                    'Google' => array(
+                        'enabled' => true,
+                        'keys' => include __DIR__ . '/google.php'
+                    )
+                )
+            ));
+            $google = $auth->authenticate('Google');
+            $accessToken = $google->getAccessToken();
+            $userProfile = $google->getUserProfile();
+
+            $email = (@$userProfile->emailVerified ?: $userProfile->email);
+            $user = $this->db->querySingle("select * from users where email = '" . $this->db->escapeString($email) . "'", true);
+            if (empty($user)) {
+                // We probably need to display a message rather than just send them off to the main site to login.
+                // Could be that a flash message is sent?
+                return $response->withHeader('Location', 'http://localhost:8010/login');
+            }
+
+            $token = $this->get('token')($user);
+            // base64 as php internal web server & slim freak out with a '.' in the url
+            return $response->withRedirect('http://localhost:8010/sso/login/' . base64_encode((string)$token->generate()));
+        }
+    } catch(\Exception $e){
+        die('Oops, we ran into an issue! ' . $e->getMessage());
+    }
+});
