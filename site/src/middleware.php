@@ -8,7 +8,7 @@ use Monolog\Handler\RotatingFileHandler;
 //$logger->pushHandler($rotating);
 
 $app->add(new \Slim\Middleware\JwtAuthentication([
-    'path'        => '/projects',
+    'path'        => '/',
     'passthrough' => ['/login', '/sso/login', '/info'],
     'secret'      => file_get_contents(__DIR__.'/../../keys/hs512'),
     'algorithm'   => 'HS512',

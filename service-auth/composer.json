@@ -5,7 +5,7 @@
         "slim/php-view": "^2.0",
         "monolog/monolog": "^1.17",
         "onelogin/php-saml": "^2.11",
-        "hybridauth/hybridauth": "v2.9.6",
+        "hybridauth/hybridauth": "2.9.6",
         "lcobucci/jwt": "^3.2",
         "tuupola/cors-middleware": "^0.5.2"
     },
