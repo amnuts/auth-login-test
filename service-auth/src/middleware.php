@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Handle CORS requests gracefully, returning a standard error object (json) if
+ * anything goes wrong.  This happens for all requests.
+ */
 $app->add(new \Tuupola\Middleware\Cors([
     'origin' => ['*'],
     'methods' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],

@@ -10,11 +10,27 @@ class Token
 {
     protected $user;
 
+    /**
+     * Token constructor.
+     *
+     * @param mixed $c The Slim contains (Pimple)
+     * @param string $user The unique id of the user (in this case, email address)
+     */
     public function __construct($c, $user)
     {
         $this->user = $user;
     }
 
+    /**
+     * Generate a new JWT token.
+     *
+     * Different claims could be put in here, but this is a viable minimum example.
+     *
+     * Key file is set to be HMAC512, though it could easily be change for RSA, or
+     * different strengths (though not sure why it would want to be less strength).
+     *
+     * @return \Lcobucci\JWT\Token
+     */
     public function generate()
     {
         return (new Builder())

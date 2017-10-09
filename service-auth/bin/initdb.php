@@ -11,6 +11,12 @@ if (file_exists($dbPath)) {
 
 $db = new \SQLite3($dbPath);
 
+/*
+ * Generate a table that will be used to identify 'users'.
+ * This may have more information, but if going full microservices route then
+ * this may be the bare minimal to allow authentication and then profile info
+ * would be in different databases and tables.
+ */
 $db->exec('
     CREATE TABLE users
     (
@@ -22,6 +28,11 @@ $db->exec('
     )
 ');
 
+/*
+ * Need somewhere to store the IdP information.  This will basically have the
+ * end points to the IdP, the x509 certificate key, or anything else that needs
+ * to be passed to the SAML authentication routine.
+ */
 $db->exec('
     CREATE TABLE saml_entities
     (
@@ -33,6 +44,10 @@ $db->exec('
     )
 ');
 
+/*
+ * Multiple users could use the sane IdP, so we also need a linking table to
+ * associate IdPs to the users.
+ */
 $db->exec('
     CREATE TABLE users_saml
     (
@@ -44,6 +59,10 @@ $db->exec('
 $db->exec('CREATE INDEX email_tindex ON users (email)');
 $db->exec('CREATE UNIQUE INDEX user_saml_uindex ON users_saml (user_id, saml_id)');
 
+/*
+ * Setting up the IdP details I'm using... This probably shouldn't be in
+ * GitHub, but it's too late now so what the hell.
+ */
 $db->exec(sprintf("
     INSERT INTO saml_entities (`code`, `entity_id`, `sso`, `slo`, `cert`) 
     VALUES ('%s', '%s', '%s', '%s', '%s')",
@@ -56,7 +75,9 @@ $db->exec(sprintf("
     ])
 ));
 
-
+/*
+ * Just generating some random users.
+ */
 $f = \Faker\Factory::create('en_GB');
 // yes, these will all be the same, but it makes testing the login easier!
 $password = password_hash('password', PASSWORD_DEFAULT);

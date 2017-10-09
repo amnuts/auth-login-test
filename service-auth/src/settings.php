@@ -16,12 +16,19 @@ return [
             'level' => \Monolog\Logger::DEBUG,
         ],
 
-        // database
+        /*
+         * Database path for this example sqlite.
+         */
         'database' => [
             'path' => __DIR__.'/../users.sqlite'
         ],
 
-        // SSO logins
+        /*
+         * Base SSO details.
+         * Already put in the structure needed by OneLogin's SAML library.  The
+         * idp settings are completed from data in the db and the sp is completed
+         * with route component information.
+         */
         'sso' => [
             'sp' => [
                 'entityId' => 'http://localhost:8020/sso/%s/metadata',

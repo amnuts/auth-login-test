@@ -10,6 +10,7 @@ class Token
     protected $jwt;
     protected $alg;
 
+    /** @var array JWT 'alg' value mapped to Signer class */
     private $algorithms = [
         'HS256' => 'Hmac\\Sha256',
         'HS384' => 'Hmac\\Sha384',
@@ -22,6 +23,13 @@ class Token
         'ES512' => 'Ecdsa\\Sha512'
     ];
 
+    /**
+     * Token constructor.
+     *
+     * @param mixed $c The Slim contains (Pimple)
+     * @param string $jwtString The JWT token
+     * @param string $alg The algorithm to be used (defaults to HS512 if not supplied)
+     */
     public function __construct($c, $jwtString, $alg = null)
     {
         try {
@@ -36,6 +44,11 @@ class Token
         } catch (\Exception $e) {}
     }
 
+    /**
+     * Validate if the token is authentic and from the signing server.
+     *
+     * @return bool
+     */
     public function validate()
     {
         $decoded = null;
