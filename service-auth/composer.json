@@ -16,7 +16,7 @@
         }
     },
     "scripts": {
-        "start": "php -S localhost:8020 -t public public/index.php",
+        "start": "php -S localhost:8020 -t public",
         "initdb": "php bin/initdb.php"
     },
     "require-dev": {

@@ -14,6 +14,6 @@ composer run-script initdb
 Run the web servers:
 
 ```
-php -S localhost:8010 -t public site/public/index.php
-php -S localhost:8020 -t public service-auth/public/index.php
+php -S localhost:8010 -t site/public
+php -S localhost:8020 -t service-auth/public
 ```
