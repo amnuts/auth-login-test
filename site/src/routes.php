@@ -97,6 +97,13 @@ $app->get('/sso/login/{jwt}', function (Request $request, Response $response, ar
 /*
  * Pure testing purposes
  */
+$app->get('/ws', function (Request $request, Response $response, array $args) {
+    return $this->renderer->render($response, 'webservice.phtml', ['token' => $this->jwt]);
+});
+
+/*
+ * Pure testing purposes
+ */
 $app->get('/info', function (Request $request, Response $response, array $args) {
     return phpinfo();
 });

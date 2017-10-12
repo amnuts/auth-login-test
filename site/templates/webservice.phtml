@@ -1,0 +1,48 @@
+<?php include __DIR__.'/_header.php'; ?>
+<?php include __DIR__.'/_menu.php'; ?>
+
+<h1>Web service page</h1>
+
+<p>Go ahead and try some calls to a webservice (it passes your token along via the Authorization header):</p>
+
+<p><a href="user/name" id="test-name" class="ws-test">Get a user's name</a></p>
+<p id="test-name-response" class="test-response"></p>
+
+<p><a href="user/email" id="test-email" class="ws-test">Get a user's email address</a></p>
+<p id="test-email-response" class="test-response"></p>
+
+<p><a href="user" id="test-user" class="ws-test">Get the user's details</a></p>
+<p id="test-user-response" class="test-response"></p>
+
+<p><a href="user" id="test-fake" class="ws-test">Fake an invalid token</a></p>
+<p class="test-fake-response">(should throw a 401, check the network logs)</p>
+
+<script>
+    var $token = '<?php echo (string)$token; ?>';
+    var $fakeToken = '<?php echo (string)$token; ?>x';
+
+    $(document).on('click', '.ws-test', function(e) {
+        e.preventDefault();
+        var $id = $(this).attr('id');
+        $.ajax({
+            url: 'http://localhost:8030/' + $(this).attr('href'),
+            dataType: 'json',
+            beforeSend: function(xhr){
+                $('.test-response').html('');
+                xhr.setRequestHeader('Authorization', 'Bearer ' + ($id == 'test-fake' ? $fakeToken : $token));
+            },
+            success: function(d) {
+                if (d.hasOwnProperty('token') && d.token !== '') {
+                    $token = d.token;
+                    if (d.hasOwnProperty(('response'))) {
+                        $('#' + $id + '-response').html(JSON.stringify(d.response));
+                    }
+                }
+            },
+            crossDomain: true,
+            cache: false
+        });
+    });
+</script>
+
+<?php include __DIR__.'/_footer.php'; ?>

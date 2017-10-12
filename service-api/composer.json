@@ -1,10 +1,20 @@
 {
   "require": {
-    "lcobucci/jwt": "^3.2"
+    "php": ">=5.5.0",
+    "slim/slim": "^3.1",
+    "slim/php-view": "^2.0",
+    "monolog/monolog": "^1.17",
+    "lcobucci/jwt": "^3.2",
+    "tuupola/cors-middleware": "^0.5.2",
+    "fzaninotto/Faker": "^1.7"
   },
-  "autoload": {
+  "autoload-dev": {
     "psr-4": {
-      "AuthTest\\": "../src/"
+      "Slim\\Middleware\\": "src/Components/Middleware",
+      "Components\\": "src/Components"
     }
+  },
+  "scripts": {
+    "start": "php -S localhost:8030 -t public"
   }
 }
