@@ -11,7 +11,6 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "AuthTest\\": "../src",
             "Components\\": "src/Components"
         }
     },

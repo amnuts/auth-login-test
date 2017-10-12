@@ -1,10 +1,4 @@
 {
   "require": {
-    "fzaninotto/Faker": "^1.7"
-  },
-  "autoload": {
-    "psr-4": {
-      "AuthTest\\": "src/"
-    }
   }
 }
