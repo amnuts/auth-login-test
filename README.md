@@ -16,4 +16,5 @@ Run the web servers:
 ```
 php -S localhost:8010 -t site/public
 php -S localhost:8020 -t service-auth/public
+php -S localhost:8030 -t service-api/public
 ```
